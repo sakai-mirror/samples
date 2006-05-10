@@ -3,9 +3,9 @@
 <registration>
 
 	<tool
-			id="sakai.sample.tools.browser"
-			title="Browser"
-			description="A browser sample tool.">
+			id="sakai.sample.tool.servlet"
+			title="Simple Sample Servlet Tool"
+			description="A simple sample servlet tool.">
 
 		<configuration name="a" value="1" />
 		<configuration name="b" value="2" />
@@ -14,7 +14,6 @@
 		<category name="sakai.sample" />
 
 		<keyword name="sample" />
-		<keyword name="browser" />
 
 	</tool>
 
