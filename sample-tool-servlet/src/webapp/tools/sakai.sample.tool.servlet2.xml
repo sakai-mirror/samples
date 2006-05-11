@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+
+<registration>
+
+	<tool
+			id="sakai.sample.tool.servlet2"
+			title="Simple Sample Servlet Tool 2"
+			description="A slightly slicker sample servlet tool.">
+
+		<category name="sakai.sample" />
+
+		<keyword name="sample" />
+
+	</tool>
+
+</registration>

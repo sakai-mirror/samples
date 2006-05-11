@@ -18,9 +18,23 @@
         <dispatcher>INCLUDE</dispatcher>
     </filter-mapping>
 
+    <filter-mapping>
+        <filter-name>sakai.request</filter-name>
+        <servlet-name>sakai.sample.tool.servlet2</servlet-name>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
+    </filter-mapping>
+
     <servlet>
         <servlet-name>sakai.sample.tool.servlet</servlet-name>
         <servlet-class>org.sakaiproject.sample.tool.ServletTool</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet>
+        <servlet-name>sakai.sample.tool.servlet2</servlet-name>
+        <servlet-class>org.sakaiproject.sample.tool.ServletTool2</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
 

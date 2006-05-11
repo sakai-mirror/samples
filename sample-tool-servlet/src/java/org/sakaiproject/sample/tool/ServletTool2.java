@@ -34,6 +34,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.sakaiproject.tool.api.ActiveTool;
 import org.sakaiproject.tool.api.Placement;
 import org.sakaiproject.tool.api.Session;
 import org.sakaiproject.tool.api.Tool;
@@ -45,13 +46,16 @@ import org.sakaiproject.util.Web;
 
 /**
  * <p>
- * A Simple Servlet Sakai Sample tool.
+ * A Simple Servlet Sakai Sample tool (number 2), which has some tool modes / destinations controlled by URL
  * </p>
  */
-public class ServletTool extends HttpServlet
+public class ServletTool2 extends HttpServlet
 {
 	/** Our log (commons). */
-	private static Log M_log = LogFactory.getLog(ServletTool.class);
+	private static Log M_log = LogFactory.getLog(ServletTool2.class);
+
+	/** poor man's service - obviously, no persistence. */
+	private String m_value = "unset";
 
 	/**
 	 * Access the Servlet's information display.
@@ -60,7 +64,7 @@ public class ServletTool extends HttpServlet
 	 */
 	public String getServletInfo()
 	{
-		return "Simple Servlet Sakai Sample tool";
+		return "Simple Servlet Sakai Sample tool (2)";
 	}
 
 	/**
@@ -97,6 +101,33 @@ public class ServletTool extends HttpServlet
 	 * @throws ServletException.
 	 * @throws IOException.
 	 */
+	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
+	{
+		// get the Tool session
+		ToolSession toolSession = SessionManager.getCurrentToolSession();
+
+		// take value
+		String value = req.getParameter("value");
+		if (value != null)
+		{
+			m_value = value;
+		}
+
+		// send redirect to our current destination
+		String current = Web.returnUrl(req, (String) toolSession.getAttribute(ActiveTool.TOOL_ATTR_CURRENT_DESTINATION));
+		res.sendRedirect(res.encodeRedirectURL(current));
+	}
+
+	/**
+	 * Respond to requests.
+	 * 
+	 * @param req
+	 *        The servlet request.
+	 * @param res
+	 *        The servlet response.
+	 * @throws ServletException.
+	 * @throws IOException.
+	 */
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
 	{
 		// get the Sakai session
@@ -108,6 +139,35 @@ public class ServletTool extends HttpServlet
 		// get the Tool
 		Placement placement = ToolManager.getCurrentPlacement();
 
+		// dispatch our destinations
+		String path = req.getPathInfo();
+		if (path == null) path = "/";
+
+		// deal (manually, for now) with null-path - last mode or home if new
+		if ("/".equals(path))
+		{
+			String currentPath = (String) toolSession.getAttribute(ActiveTool.TOOL_ATTR_CURRENT_DESTINATION);
+			if (currentPath == null)
+			{
+				currentPath = "/home";
+			}
+
+			String url = Web.returnUrl(req, currentPath);
+			res.sendRedirect(res.encodeRedirectURL(url));
+			return;
+		}
+
+		// 0 parts means the path was just "/", otherwise parts[0] = "", parts[1] = the first part, etc.
+		String[] parts = path.split("/");
+
+		String destination = null;
+
+		// different locations for each path
+		if (parts.length > 1)
+		{
+			destination = parts[1];
+		}
+
 		// fragment or not?
 		boolean fragment = Boolean.TRUE.toString().equals(req.getAttribute(Tool.FRAGMENT));
 
@@ -118,6 +178,11 @@ public class ServletTool extends HttpServlet
 		{
 			// write a full HTML header
 			res.setContentType("text/html; charset=UTF-8");
+			res.addDateHeader("Expires", System.currentTimeMillis() - (1000L * 60L * 60L * 24L * 365L));
+			res.addDateHeader("Last-Modified", System.currentTimeMillis());
+			res.addHeader("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0, post-check=0, pre-check=0");
+			res.addHeader("Pragma", "no-cache");
+
 			out = res.getWriter();
 			out
 					.println("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">");
@@ -132,17 +197,21 @@ public class ServletTool extends HttpServlet
 			{
 				out.println(headInclude);
 			}
-			
-			// use our placement title
-			out.println("<title>");
+
+			// use our placement title, with our destination
+			out.print("<title>");
 			if (placement != null)
 			{
-				out.println(Validator.escapeHtml(placement.getTitle()));
+				out.print(Validator.escapeHtml(placement.getTitle()));
+				if (destination != null)
+				{
+					out.print(" - " + Validator.escapeHtml(destination));
+				}
 			}
 			out.println("</title>");
 
 			out.print("</head><body");
-			
+
 			// do the body the portal wants to do
 			String onload = (String) req.getAttribute("sakai.html.body.onload");
 			if (onload != null)
@@ -150,7 +219,7 @@ public class ServletTool extends HttpServlet
 				out.print(" onload=\"" + onload + "\"");
 			}
 			out.println(">");
-			
+
 		}
 		else
 		{
@@ -218,14 +287,43 @@ public class ServletTool extends HttpServlet
 			out.println("<br />");
 		}
 
-		Web.snoop(out, true, getServletConfig(), req);
+		// show value
+		out.println("<p>Value: " + m_value + "</p>");
+
+		// different locations for each path
+		if (destination == null)
+		{
+			out.println("<p>no destination</p>");
+		}
+		else
+		{
+			out.println("<p>destination: " + destination + "</p>");
+		}
 
 		out.println("</div>");
+
+		// link to some destinations
+		String home = Web.returnUrl(req, "/home");
+		String destA = Web.returnUrl(req, "/a");
+		String destB = Web.returnUrl(req, "/b/123-45-6789");
+		out.println("<p>navigation<ul><li><a href=\"" + home + "\">home</a></li><li><a href=\"" + destA
+				+ "\">a</a></li><li><a href=\"" + destB + "\">b</a></li></ul></p>");
+
+		// a data posting
+		out
+				.println("<p><form method=\"post\" action=\""
+						+ destB
+						+ "\">value:<input name=\"value\" id=\"value\" type=\"text\" /><input name=\"submit\" type=\"submit\" id=\"submit\" value=\"submit\" /></form></p>");
+
+		Web.snoop(out, true, getServletConfig(), req);
 
 		if (!fragment)
 		{
 			// end the complete document
 			out.println("</body></html>");
 		}
+		
+		// keep track (manually, for now) of our current destination
+		toolSession.setAttribute(ActiveTool.TOOL_ATTR_CURRENT_DESTINATION, path);
 	}
 }
