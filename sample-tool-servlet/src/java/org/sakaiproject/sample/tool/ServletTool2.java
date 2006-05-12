@@ -143,19 +143,19 @@ public class ServletTool2 extends HttpServlet
 		String path = req.getPathInfo();
 		if (path == null) path = "/";
 
-		// deal (manually, for now) with null-path - last mode or home if new
-		if ("/".equals(path))
-		{
-			String currentPath = (String) toolSession.getAttribute(ActiveTool.TOOL_ATTR_CURRENT_DESTINATION);
-			if (currentPath == null)
-			{
-				currentPath = "/home";
-			}
-
-			String url = Web.returnUrl(req, currentPath);
-			res.sendRedirect(res.encodeRedirectURL(url));
-			return;
-		}
+//		// deal (manually, for now) with null-path - last mode or home if new
+//		if ("/".equals(path))
+//		{
+//			String currentPath = (String) toolSession.getAttribute(ActiveTool.TOOL_ATTR_CURRENT_DESTINATION);
+//			if (currentPath == null)
+//			{
+//				currentPath = "/home";
+//			}
+//
+//			String url = Web.returnUrl(req, currentPath);
+//			res.sendRedirect(res.encodeRedirectURL(url));
+//			return;
+//		}
 
 		// 0 parts means the path was just "/", otherwise parts[0] = "", parts[1] = the first part, etc.
 		String[] parts = path.split("/");
@@ -323,7 +323,7 @@ public class ServletTool2 extends HttpServlet
 			out.println("</body></html>");
 		}
 		
-		// keep track (manually, for now) of our current destination
-		toolSession.setAttribute(ActiveTool.TOOL_ATTR_CURRENT_DESTINATION, path);
+//		// keep track (manually, for now) of our current destination
+//		toolSession.setAttribute(ActiveTool.TOOL_ATTR_CURRENT_DESTINATION, path);
 	}
 }
