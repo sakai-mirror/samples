@@ -16,7 +16,7 @@
 	<managed-bean>
 		<description>JSF Sample tool UI controller bean</description>
 		<managed-bean-name>JsfSampleBean</managed-bean-name>
-		<managed-bean-class>org.sakaiproject.tool.sample.JsfSampleBean</managed-bean-class>
+		<managed-bean-class>org.sakaiproject.sample.tool.JsfSampleBean</managed-bean-class>
 		<managed-bean-scope>session</managed-bean-scope>
 	</managed-bean>
 
