@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+
+<registration>
+
+	<tool
+			id="sakai.sample.tool.jsf"
+			title="Simple JSF sample tool"
+			description="A sample JSF based Sakai tool."
+	>
+
+		<category name="sakai.sample" />
+
+	</tool>
+
+</registration>
