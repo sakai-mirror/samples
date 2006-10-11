@@ -26,7 +26,7 @@
 
 			<h:commandButton id="submit" action="list" value="#{msgs.submit}" /><br />
 
-			<h:commandLink action="list" immediate="true">
+			<h:commandLink action="#{JsfSampleBean.getNextStep}" immediate="true">
 				<h:outputText value="#{msgs.goto_list}"/>
 			</h:commandLink><br />
 				

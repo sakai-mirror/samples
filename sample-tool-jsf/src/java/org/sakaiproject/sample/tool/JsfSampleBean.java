@@ -33,12 +33,12 @@ public class JsfSampleBean
 {
 	/** Our log (commons). */
 	private static Log M_log = LogFactory.getLog(JsfSampleBean.class);
-	
+
 	public JsfSampleBean()
 	{
 		M_log.info("constructed");
 	}
-	
+
 	protected String value = "none";
 
 	public String getValue()
@@ -49,5 +49,11 @@ public class JsfSampleBean
 	public void setValue(String value)
 	{
 		this.value = value;
+	}
+
+	public String getNextStep()
+	{
+		M_log.info("getNextStep: returning 'list'");
+		return "list";
 	}
 }
