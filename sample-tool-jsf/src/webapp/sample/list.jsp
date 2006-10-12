@@ -22,6 +22,11 @@
 			<h:commandLink action="main">
 				<h:outputText value="#{msgs.goto_main}"/>
 			</h:commandLink>
+
+				<h:inputText id="userName" value="#{JsfSampleBean.value}" required="true">
+					<f:validateLength minimum="2" maximum="10"/>
+				</h:inputText><br />
+
 		</h:form>
 
 	</sakai:view_container>

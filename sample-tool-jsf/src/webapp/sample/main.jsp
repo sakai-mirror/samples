@@ -3,6 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsf/core" prefix="f" %>
 <%@ taglib uri="http://sakaiproject.org/jsf/sakai" prefix="sakai" %>
 
+<%-- this helps keep our (dynamic) pages from being cached --%>
 <%
 	response.setContentType("text/html; charset=UTF-8");
 	response.addDateHeader("Expires", System.currentTimeMillis() - (1000L * 60L * 60L * 24L * 365L));
@@ -13,25 +14,76 @@
 
 <f:view>
 	<sakai:view_container title="#{msgs.main_title}">
+		<sakai:view_content>
+			<h:form id="main">
 
-		<h:form id="helloForm">
-			<h:messages /><br />
-			<h:outputText value='placement=#{requestScope["sakai.tool.placement"]}' /><br />
+				<%-- The in-page view title --%>
+				<sakai:view_title value="#{msgs.main_view_title}" />
 
-			<h:outputText value="#{msgs.main_info}" /><br />
+				<%-- start with a tool bar --%>
+				<sakai:tool_bar>
+					<sakai:tool_bar_item action="#{JsfSampleBean.processToolBarItem}" value="#{msgs.main_toolbar_item}" />
+					<sakai:tool_bar_item action="#{JsfSampleBean.processToolBarItem}" value="#{msgs.main_toolbar_item}" />
+					<sakai:tool_bar_item action="#{JsfSampleBean.processToolBarItem}" value="#{msgs.main_toolbar_item}" />
+				</sakai:tool_bar>
 
-			<h:inputText id="userName" value="#{JsfSampleBean.value}" required="true">
-				<f:validateLength minimum="2" maximum="10"/>
-			</h:inputText><br />
+				<%-- some instructions or other information to the user to the user --%>
+				<sakai:doc_section>
+					<sakai:messages />
+					<h:graphicImage value="/sakai.jpg" />
+					<sakai:instruction_message value="#{msgs.main_info}" />
+				</sakai:doc_section>
 
-			<h:commandButton id="submit" action="list" value="#{msgs.submit}" /><br />
+				<%-- a list of some things that can be drilled down into --%>
+				<h:dataTable id="sample" value="#{JsfSampleBean.items}" var="item" styleClass="listHier">
 
-			<h:commandLink action="#{JsfSampleBean.getNextStep}" immediate="true">
-				<h:outputText value="#{msgs.goto_list}"/>
-			</h:commandLink><br />
-				
-			<h:graphicImage value="/sakai.jpg" />
-		</h:form>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="#{msgs.item_id}" />
+						</f:facet>
+						<h:commandLink action="#{item.processClick}">
+							<h:outputText value="#{item.id}" />
+						</h:commandLink>
+					</h:column>
 
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="#{msgs.item_a}" />
+						</f:facet>
+						<h:outputText value="#{item.a}" />
+					</h:column>
+						
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="#{msgs.item_b}" />
+						</f:facet>
+						<h:outputText value="#{item.b}" />
+					</h:column>
+	
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="#{msgs.item_c}" />
+						</f:facet>
+						<h:outputText value="#{item.c}" />
+					</h:column>
+					
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="#{msgs.select}" />
+						</f:facet>
+						<h:selectBooleanCheckbox id="select" value="#{item.selected}"/>
+					</h:column>
+
+				</h:dataTable>
+
+				<%-- end with a button bar --%>
+				<sakai:button_bar>
+					<sakai:button_bar_item action="list" value="#{msgs.goto_list}" accesskey="l" />
+					<sakai:button_bar_item action="list" value="#{msgs.goto_list}" />
+					<sakai:button_bar_item action="list" value="#{msgs.goto_list}" />
+				</sakai:button_bar>
+
+			</h:form>
+		</sakai:view_content>
 	</sakai:view_container>
 </f:view>

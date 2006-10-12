@@ -18,6 +18,11 @@
 		<managed-bean-name>JsfSampleBean</managed-bean-name>
 		<managed-bean-class>org.sakaiproject.sample.tool.JsfSampleBean</managed-bean-class>
 		<managed-bean-scope>session</managed-bean-scope>
+		<managed-property>
+			<description>Service Dependency: item service</description>
+			<property-name>itemService</property-name> 
+			<value>#{Components["org.sakaiproject.sample.tool.ItemService"]}</value>
+		</managed-property>
 	</managed-bean>
 
 	<navigation-rule>
@@ -32,7 +37,13 @@
 
 		<navigation-case>
 			<from-outcome>list</from-outcome>
-			<to-view-id>/sample/list.jsp</to-view-id>
+			<to-view-id>/sample/main.jsp</to-view-id>
+			<redirect/>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>itemClick</from-outcome>
+			<to-view-id>/sample/main.jsp</to-view-id>
 			<redirect/>
 		</navigation-case>
 

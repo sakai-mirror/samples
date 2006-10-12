@@ -54,6 +54,18 @@
         <listener-class>org.sakaiproject.util.ToolListener</listener-class>
     </listener>
 
+	<!-- local component registration listener -->
+
+	<!-- list of components to load into the shared components -->
+	<context-param>
+		<param-name>contextSharedLocation</param-name>
+		<param-value>/WEB-INF/components.xml</param-value>
+	</context-param>
+
+	<listener>
+		<listener-class>org.sakaiproject.util.ContextLoaderListener</listener-class>
+	</listener>
+
 	<!-- Sakai JSF Tool Servlet, for the sample jsf tool -->
 
     <filter-mapping>
