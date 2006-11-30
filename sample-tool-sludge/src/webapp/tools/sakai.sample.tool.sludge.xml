@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+
+<registration>
+
+	<tool
+			id="sakai.sample.tool.sludge"
+			title="Simple Sample Sludge Tool"
+			description="A simple sample sludge tool."
+			home="/home"
+	>
+
+		<category name="sakai.sample" />
+
+		<keyword name="sample" />
+
+	</tool>
+
+</registration>
