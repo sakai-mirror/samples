@@ -3,7 +3,7 @@
  * $Id$
  ***********************************************************************************
  *
- * Copyright (c) 2006 The Sakai Foundation.
+ * Copyright (c) 2006, 2007 The Sakai Foundation.
  * 
  * Licensed under the Educational Community License, Version 1.0 (the "License"); 
  * you may not use this file except in compliance with the License. 
@@ -52,7 +52,6 @@ public class SludgeController
 										.setProperty(
 											ui.newTextPropertyReference()
 												.setPropertyReference("one"))
-										.setSortable(Boolean.TRUE)
 										.setEntityNavigation(
 											ui.newEntityNavigation()
 												.setDestination(ui.newDestination().setDestination("/b/{0}", ui.newTextPropertyReference().setPropertyReference("id")))))
@@ -62,7 +61,6 @@ public class SludgeController
 										.setProperty(
 											ui.newTextPropertyReference()
 												.setPropertyReference("two"))
-										.setSortable(Boolean.FALSE)
 										.addFootnote(
 											ui.newFootnote()
 												.setText("section-one-list-footnote")
@@ -87,7 +85,6 @@ public class SludgeController
 										.setProperty(
 											ui.newTextPropertyReference()
 												.setPropertyReference("one"))
-										.setSortable(Boolean.TRUE)
 										.setEntityNavigation(
 												ui.newEntityNavigation()
 													.setDestination(ui.newDestination().setDestination("/c/{0}", ui.newTextPropertyReference().setPropertyReference("id")))))
@@ -96,15 +93,13 @@ public class SludgeController
 										.setTitle("s2-c2-title")
 										.setProperty(
 											ui.newTextPropertyReference()
-												.setPropertyReference("two"))
-										.setSortable(Boolean.FALSE))
+												.setPropertyReference("two")))
 								.addColumn(
 									ui.newPropertyColumn()
 										.setTitle("s2-c3-title")
 										.setProperty(
 											ui.newTextPropertyReference()
-												.setPropertyReference("three"))
-										.setSortable(Boolean.TRUE))));
+												.setPropertyReference("three")))));
 	}
 
 	public static Controller constructB(UiService ui)
