@@ -44,7 +44,7 @@ public class SludgeController
 								.setText("section-one-instructions"))
 						.add(
 							ui.newEntityList()
-								.setIterator(ui.newPropertyReference().setEntityReference("section-one-entity-list"), ui.newContextReference().setName("entity"))
+								.setIterator(ui.newPropertyReference().setEntityReference("section-one-entity-list"), "entity")
 								.setTitle("section-one-list-title")
 								.addColumn(
 									ui.newPropertyColumn()
@@ -78,7 +78,7 @@ public class SludgeController
 								.setText("section-two-instructions"))
 						.add(
 							ui.newEntityList()
-								.setIterator(ui.newPropertyReference().setEntityReference("section-two-entity-list"), ui.newContextReference().setName("entity"))
+								.setIterator(ui.newPropertyReference().setEntityReference("section-two-entity-list"), "entity")
 								.setTitle("section-two-list-title")
 								.addColumn(
 									ui.newPropertyColumn()
