@@ -65,12 +65,23 @@ import org.w3c.dom.Element;
 /**
  * <p>
  * SampleImplAccess is a service implementation that demonstrates how to store application-private content in ContentHosting, and to
- * make these available from the Access servlet. This code would usually be found in a service implementation of the application's
- * service API. In this example, there is no API.
+ * make these available from the Access servlet under the application's control. This code would usually be found in a service
+ * implementation of the application's service API. In this example, there is no API, but there is still an implementation. For a
+ * real application, we would add the API implementation code to this code.
  * <p>
  * The content is stored in ContentHosting's "private" space (/private/...), in a folder named for this application. The name
  * choosen for example this is "sampleAccess". In our init() method, we make sure that this space exists. Note the use of a
- * SecurityAdvisor there to assure that the creation succeeds.
+ * SecurityAdvisor there to assure that the ContentHostingService calls pass security.
+ * <p>
+ * A SecurityAdvisor is code you provide, related only to processing of the current request (i.e. code running on the current
+ * thread). When there is a security advisor, any normal security calls are first sent to the advisor code. That code can allow the
+ * access, deny the access, or say nothing about the access, passing the decision on to any other SecurityAdvisors in a stack, or to
+ * the normal security processing code.
+ * <p>
+ * You use a security advisor when you can establish that some operation should be allowed to happen, but you are going to
+ * collaborate with some other service to make the action happen, and the other service might not know that it is ok to perform the
+ * calls you are about to make. The natural security it would invoke might not be proper for your application. So you place a
+ * security advisor on the stack and take over security for the duration of your request processing.
  * <p>
  * In a normal application, the end-user's HTTP interaction would result in content to save in the application's ContentHosting
  * area, either from form fields or from a file upload. Once the body bytes are created, the application would save these in some
@@ -141,18 +152,6 @@ public class SampleImplAccess implements EntityProducer
 	/*******************************************************************************************************************************
 	 * Abstractions, etc.
 	 ******************************************************************************************************************************/
-
-	/** stream content requests if true, read all into memory and send if false. */
-	protected static final boolean STREAM_CONTENT = true;
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public String getAttachmentReference(String container, String id)
-	{
-		String ref = REFERENCE_ROOT + ((container == null) ? "" : ("/" + container + ((id == null) ? "" : ("/" + id))));
-		return ref;
-	}
 
 	/**
 	 * Setup a security advisor.
