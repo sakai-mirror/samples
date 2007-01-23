@@ -119,7 +119,7 @@ import org.w3c.dom.Element;
  * If you deploy this sample, you will have a working Access servlet / ContentHosting using application that serves up a single file
  * to anyone authorized to see it. You can test this by entering this URL:
  * <ul>
- * <li>http://<your server dns and port>/access/sampleAccess/content/private/mercury/test.txt</li>
+ * <li>http://<your server dns and port>/access/sampleAccess/content/private/sampleAccess/mercury/test.txt</li>
  * </ul>
  * <p>
  * Note that there are some methods needed for EntityProducer that we don't use here. The Entity Bus will be later enhanced to make
