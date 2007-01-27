@@ -109,7 +109,8 @@ public class SludgeController
 			ui.newInterface()
 				.setTitle("uiB-title")
 				.setHeader("uiB-header")
-				.add(
+				.add(ui.newCountdownTimer().setDuration(2*60*1000).setTimeTillExpire(90*1000).setExpireDestination(ui.newDestination().setDestination("/")))
+ 				.add(
 					ui.newSection()
 						.add(
 							ui.newInstructions()
