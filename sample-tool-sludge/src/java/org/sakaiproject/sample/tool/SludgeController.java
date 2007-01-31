@@ -43,6 +43,11 @@ public class SludgeController
 							ui.newInstructions()
 								.setText("section-one-instructions"))
 						.add(
+							ui.newBarChart()
+								.setWidth(300)
+								.setHeight(200)
+								.setData(ui.newConstantPropertyReference().setValue("0,0,0,1,1,2,2,4,7,8,9,9,10,10,11,12,13,13,15,20,22,24,25,25,25,30,31,32,33,33,35,40")))
+						.add(
 							ui.newEntityList()
 								.setIterator(ui.newPropertyReference().setEntityReference("section-one-entity-list"), "entity")
 								.setTitle("section-one-list-title")
