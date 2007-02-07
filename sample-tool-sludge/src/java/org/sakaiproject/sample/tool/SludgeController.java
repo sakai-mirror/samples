@@ -49,24 +49,23 @@ public class SludgeController
 								.setData(ui.newConstantPropertyReference().setValue("0,0,0,1,1,2,2,4,7,8,9,9,10,10,11,12,13,13,15,20,22,24,25,25,25,30,31,32,33,33,35,40")))
 						.add(
 							ui.newEntityList()
-								.setIterator(ui.newPropertyReference().setEntityReference("section-one-entity-list"), "entity")
+								.setIterator(ui.newPropertyReference().setReference("section-one-entity-list"), "entity")
 								.setTitle("section-one-list-title")
 								.addColumn(
 									ui.newPropertyColumn()
 										.setTitle("s1-c1-title")
 										.setProperty(
 											ui.newTextPropertyReference()
-												.setEntityReference("entity")
-												.setPropertyReference("one"))
+												.setReference("entity.one"))
 										.setEntityNavigation(
 											ui.newEntityNavigation()
-												.setDestination(ui.newDestination().setDestination("/b/{0}", ui.newTextPropertyReference().setEntityReference("entity").setPropertyReference("id")))))
+												.setDestination(ui.newDestination().setDestination("/b/{0}", ui.newTextPropertyReference().setReference("entity.id")))))
 								.addColumn(
 									ui.newPropertyColumn()
 										.setTitle("s1-c2-title")
 										.setProperty(
 											ui.newTextPropertyReference()
-												.setEntityReference("entity").setPropertyReference("two"))
+												.setReference("entity.two"))
 										.addFootnote(
 											ui.newFootnote()
 												.setText("section-one-list-footnote")
@@ -74,7 +73,7 @@ public class SludgeController
 													ui.newDecision()
 														.setProperty(
 															ui.newPropertyReference()
-																.setEntityReference("entity").setPropertyReference("tasty")))))))
+																.setReference("entity.tasty")))))))
 				.add(
 					ui.newSection()
 						.setTitle("section-two-title")
@@ -83,29 +82,29 @@ public class SludgeController
 								.setText("section-two-instructions"))
 						.add(
 							ui.newEntityList()
-								.setIterator(ui.newPropertyReference().setEntityReference("section-two-entity-list"), "entity")
+								.setIterator(ui.newPropertyReference().setReference("section-two-entity-list"), "entity")
 								.setTitle("section-two-list-title")
 								.addColumn(
 									ui.newPropertyColumn()
 										.setTitle("s2-c1-title")
 										.setProperty(
 											ui.newTextPropertyReference()
-												.setEntityReference("entity").setPropertyReference("one"))
+												.setReference("entity.one"))
 										.setEntityNavigation(
 												ui.newEntityNavigation()
-													.setDestination(ui.newDestination().setDestination("/c/{0}", ui.newTextPropertyReference().setEntityReference("entity").setPropertyReference("id")))))
+													.setDestination(ui.newDestination().setDestination("/c/{0}", ui.newTextPropertyReference().setReference("entity.id")))))
 								.addColumn(
 									ui.newPropertyColumn()
 										.setTitle("s2-c2-title")
 										.setProperty(
 											ui.newTextPropertyReference()
-												.setEntityReference("entity").setPropertyReference("two")))
+												.setReference("entity.two")))
 								.addColumn(
 									ui.newPropertyColumn()
 										.setTitle("s2-c3-title")
 										.setProperty(
 											ui.newTextPropertyReference()
-												.setEntityReference("entity").setPropertyReference("three")))));
+												.setReference("entity.three")))));
 	}
 
 	public static Controller constructB(UiService ui)
@@ -122,39 +121,39 @@ public class SludgeController
 								.setText("sectionB-instructions"))
 						.add(
 							ui.newEntityDisplay()
-								.setEntityReference(ui.newPropertyReference().setEntityReference("entityB-display"))
+								.setEntityReference(ui.newPropertyReference().setReference("entityB-display"))
 								.setTitle("sectionB-display-title")
 								.addRow(
 									ui.newPropertyRow()
 										.setTitle("r1B-title")
 										.setProperty(
 											ui.newTextPropertyReference()
-												.setPropertyReference("id")))
+												.setReference("entityB-display.id")))
 								.addRow(
 									ui.newPropertyRow()
 										.setTitle("r2B-title")
 										.setProperty(
 											ui.newTextPropertyReference()
-												.setPropertyReference("one")))
+												.setReference("entityB-display.one")))
 								.addRow(
 									ui.newPropertyRow()
 										.setTitle("r3B-title")
 										.setProperty(
 											ui.newTextPropertyReference()
-												.setPropertyReference("two")))
+												.setReference("entityB-display.two")))
 								.addRow(
 									ui.newPropertyRow()
 										.setTitle("r4B-title")
 										.setProperty(
 											ui.newTextPropertyReference()
-												.setPropertyReference("tasty"))))
+												.setReference("entityB-display.tasty"))))
 								.add(
 									ui.newSection()
 										.setTitle("buttons-title")
 										.add(
 											ui.newNavigation()
 												.setTitle("button-one-title")
-												.setDestination(ui.newDestination().setDestination("/c/$ID", ui.newPropertyReference().setEntityReference("entityB-display").setPropertyReference("id"))))
+												.setDestination(ui.newDestination().setDestination("/c/$ID", ui.newPropertyReference().setReference("entityB-display.id"))))
 										.add(
 												ui.newNavigation()
 													.setTitle("button-two-title")
