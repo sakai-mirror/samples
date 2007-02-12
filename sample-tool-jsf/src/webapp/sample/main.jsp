@@ -1,8 +1,6 @@
-<!-- sample-tool-jsf main.jsp -->
 <%@ taglib uri="http://java.sun.com/jsf/html" prefix="h" %>
 <%@ taglib uri="http://java.sun.com/jsf/core" prefix="f" %>
 <%@ taglib uri="http://sakaiproject.org/jsf/sakai" prefix="sakai" %>
-
 <%-- this helps keep our (dynamic) pages from being cached --%>
 <%
 	response.setContentType("text/html; charset=UTF-8");
@@ -11,14 +9,15 @@
 	response.addHeader("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0, post-check=0, pre-check=0");
 	response.addHeader("Pragma", "no-cache");
 %>
-
 <f:view>
-	<sakai:view_container title="#{msgs.main_title}">
-		<sakai:view_content>
+	<sakai:view title="#{msgs.main_title}" toolCssHref="/sakai-sample-tool-jsf/sample/sampleToolJsf.css">
 			<h:form id="main">
 
 				<%-- The in-page view title --%>
 				<sakai:view_title value="#{msgs.main_view_title}" />
+
+				<%-- Test embedded style --%>
+				<div class="bigRed">Is this red?</div>
 
 				<%-- start with a tool bar --%>
 				<sakai:tool_bar>
@@ -52,21 +51,21 @@
 						</f:facet>
 						<h:outputText value="#{item.a}" />
 					</h:column>
-						
+
 					<h:column>
 						<f:facet name="header">
 							<h:outputText value="#{msgs.item_b}" />
 						</f:facet>
 						<h:outputText value="#{item.b}" />
 					</h:column>
-	
+
 					<h:column>
 						<f:facet name="header">
 							<h:outputText value="#{msgs.item_c}" />
 						</f:facet>
 						<h:outputText value="#{item.c}" />
 					</h:column>
-					
+
 					<h:column>
 						<f:facet name="header">
 							<h:outputText value="#{msgs.select}" />
@@ -84,6 +83,5 @@
 				</sakai:button_bar>
 
 			</h:form>
-		</sakai:view_content>
-	</sakai:view_container>
+	</sakai:view>
 </f:view>
