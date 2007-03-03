@@ -53,19 +53,19 @@ public class SludgeController
 								.setTitle("section-one-list-title")
 								.addColumn(
 									ui.newPropertyColumn()
-										.setTitle("s1-c1-title")
 										.setProperty(
 											ui.newTextPropertyReference()
 												.setReference("entity.one"))
+										.setTitle("s1-c1-title")
 										.setEntityNavigation(
 											ui.newEntityNavigation()
 												.setDestination(ui.newDestination().setDestination("/b/{0}", ui.newTextPropertyReference().setReference("entity.id")))))
 								.addColumn(
 									ui.newPropertyColumn()
-										.setTitle("s1-c2-title")
 										.setProperty(
 											ui.newTextPropertyReference()
 												.setReference("entity.two"))
+										.setTitle("s1-c2-title")
 										.addFootnote(
 											ui.newFootnote()
 												.setText("section-one-list-footnote")
@@ -86,25 +86,25 @@ public class SludgeController
 								.setTitle("section-two-list-title")
 								.addColumn(
 									ui.newPropertyColumn()
-										.setTitle("s2-c1-title")
 										.setProperty(
 											ui.newTextPropertyReference()
 												.setReference("entity.one"))
+										.setTitle("s2-c1-title")
 										.setEntityNavigation(
 												ui.newEntityNavigation()
 													.setDestination(ui.newDestination().setDestination("/c/{0}", ui.newTextPropertyReference().setReference("entity.id")))))
 								.addColumn(
 									ui.newPropertyColumn()
-										.setTitle("s2-c2-title")
 										.setProperty(
 											ui.newTextPropertyReference()
-												.setReference("entity.two")))
+												.setReference("entity.two"))
+										.setTitle("s2-c2-title"))
 								.addColumn(
 									ui.newPropertyColumn()
-										.setTitle("s2-c3-title")
 										.setProperty(
 											ui.newTextPropertyReference()
-												.setReference("entity.three")))));
+												.setReference("entity.three"))
+										.setTitle("s2-c3-title"))));
 	}
 
 	public static Controller constructB(UiService ui)
