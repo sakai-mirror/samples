@@ -57,8 +57,8 @@ public class SludgeController
 											ui.newTextPropertyReference()
 												.setReference("entity.one"))
 										.setTitle("s1-c1-title")
-										.setEntityNavigation(
-											ui.newEntityNavigation()
+										.addEntityNavigation(
+											ui.newNavigation()
 												.setDestination(ui.newDestination().setDestination("/b/{0}", ui.newTextPropertyReference().setReference("entity.id")))))
 								.addColumn(
 									ui.newPropertyColumn()
@@ -90,8 +90,8 @@ public class SludgeController
 											ui.newTextPropertyReference()
 												.setReference("entity.one"))
 										.setTitle("s2-c1-title")
-										.setEntityNavigation(
-												ui.newEntityNavigation()
+										.addEntityNavigation(
+												ui.newNavigation()
 													.setDestination(ui.newDestination().setDestination("/c/{0}", ui.newTextPropertyReference().setReference("entity.id")))))
 								.addColumn(
 									ui.newPropertyColumn()
