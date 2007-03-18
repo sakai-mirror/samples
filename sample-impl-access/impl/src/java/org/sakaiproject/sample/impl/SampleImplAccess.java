@@ -57,6 +57,7 @@ import org.sakaiproject.exception.OverQuotaException;
 import org.sakaiproject.exception.PermissionException;
 import org.sakaiproject.exception.ServerOverloadException;
 import org.sakaiproject.exception.TypeException;
+import org.sakaiproject.tool.api.Session;
 import org.sakaiproject.tool.api.SessionManager;
 import org.sakaiproject.util.StringUtil;
 import org.w3c.dom.Document;
@@ -64,66 +65,61 @@ import org.w3c.dom.Element;
 
 /**
  * <p>
- * SampleImplAccess is a service implementation that demonstrates how to store application-private content in ContentHosting, and to
- * make these available from the Access servlet under the application's control. This code would usually be found in a service
- * implementation of the application's service API. In this example, there is no API, but there is still an implementation. For a
- * real application, we would add the API implementation code to this code.
+ * SampleImplAccess is a service implementation that demonstrates how to store application-private content in ContentHosting, and to make these
+ * available from the Access servlet under the application's control. This code would usually be found in a service implementation of the
+ * application's service API. In this example, there is no API, but there is still an implementation. For a real application, we would add the API
+ * implementation code to this code.
  * <p>
- * The content is stored in ContentHosting's "private" space (/private/...), in a folder named for this application. The name
- * choosen for example this is "sampleAccess". In our init() method, we make sure that this space exists. Note the use of a
- * SecurityAdvisor there to assure that the ContentHostingService calls pass security.
+ * The content is stored in ContentHosting's "private" space (/private/...), in a folder named for this application. The name choosen for example this
+ * is "sampleAccess". In our init() method, we make sure that this space exists. Note the use of a SecurityAdvisor there to assure that the
+ * ContentHostingService calls pass security.
  * <p>
- * A SecurityAdvisor is code you provide, related only to processing of the current request (i.e. code running on the current
- * thread). When there is a security advisor, any normal security calls are first sent to the advisor code. That code can allow the
- * access, deny the access, or say nothing about the access, passing the decision on to any other SecurityAdvisors in a stack, or to
- * the normal security processing code.
+ * A SecurityAdvisor is code you provide, related only to processing of the current request (i.e. code running on the current thread). When there is a
+ * security advisor, any normal security calls are first sent to the advisor code. That code can allow the access, deny the access, or say nothing
+ * about the access, passing the decision on to any other SecurityAdvisors in a stack, or to the normal security processing code.
  * <p>
- * You use a security advisor when you can establish that some operation should be allowed to happen, but you are going to
- * collaborate with some other service to make the action happen, and the other service might not know that it is ok to perform the
- * calls you are about to make. The natural security it would invoke might not be proper for your application. So you place a
- * security advisor on the stack and take over security for the duration of your request processing.
+ * You use a security advisor when you can establish that some operation should be allowed to happen, but you are going to collaborate with some other
+ * service to make the action happen, and the other service might not know that it is ok to perform the calls you are about to make. The natural
+ * security it would invoke might not be proper for your application. So you place a security advisor on the stack and take over security for the
+ * duration of your request processing.
  * <p>
- * In a normal application, the end-user's HTTP interaction would result in content to save in the application's ContentHosting
- * area, either from form fields or from a file upload. Once the body bytes are created, the application would save these in some
- * named and located file in ContentHosting. We emulate this and show how to do it in the init() method, creating our one hosted
- * item.
+ * In a normal application, the end-user's HTTP interaction would result in content to save in the application's ContentHosting area, either from form
+ * fields or from a file upload. Once the body bytes are created, the application would save these in some named and located file in ContentHosting.
+ * We emulate this and show how to do it in the init() method, creating our one hosted item.
  * <p>
- * In a normal application, the HTML sent to the end-user would include URL references to the files in our private ContentHosting
- * space. These might be IMG tags (to embed images), or FRAME or IFRAME addresses, or anything else HTML allows. We ask the
- * ContentResources for their URLs so we can form our HTML responses.
+ * In a normal application, the HTML sent to the end-user would include URL references to the files in our private ContentHosting space. These might
+ * be IMG tags (to embed images), or FRAME or IFRAME addresses, or anything else HTML allows. We ask the ContentResources for their URLs so we can
+ * form our HTML responses.
  * <p>
- * When the request comes back from the browser to the URL of our ContentHosting items, the Access servlet fields the request. We
- * register as a EntityProducer in our init() method so that Access will allow us to handle the heart of these requests.
+ * When the request comes back from the browser to the URL of our ContentHosting items, the Access servlet fields the request. We register as a
+ * EntityProducer in our init() method so that Access will allow us to handle the heart of these requests.
  * <p>
- * Note that we also declare our implementation class as implementing EntityProducer, which is needed to register. This is best done
- * in the implementation class instead of the API, since nobody using your API services really need to know you are an
- * EntityProducer.
+ * Note that we also declare our implementation class as implementing EntityProducer, which is needed to register. This is best done in the
+ * implementation class instead of the API, since nobody using your API services really need to know you are an EntityProducer.
  * <p>
- * The way that we know that the URL is for us to handle is because we set the ContentResource to have a URL prefix, our own special
- * one, that we recognize. While an application can use any form of URL after this it wants, it is convienent to just prefix the
- * ContentHosting's natural Access URL with our special code, leaving the rest as a ContentHosting entity reference. We do that in
- * this example.
+ * The way that we know that the URL is for us to handle is because we set the ContentResource to have a URL prefix, our own special one, that we
+ * recognize. While an application can use any form of URL after this it wants, it is convienent to just prefix the ContentHosting's natural Access
+ * URL with our special code, leaving the rest as a ContentHosting entity reference. We do that in this example.
  * <p>
- * The key thing we are responsible for is determining if the access is allowed. The natural security set on our private area in
- * ContentHosting assures that nobody has any access at all to the items there. If we decide to grant access, we setup a security
- * advisor so that ContentHosting's security check is satisfied.
+ * The key thing we are responsible for is determining if the access is allowed. The natural security set on our private area in ContentHosting
+ * assures that nobody has any access at all to the items there. If we decide to grant access, we setup a security advisor so that ContentHosting's
+ * security check is satisfied.
  * <p>
- * The most common way to check security is to encode the context id into the URL, and into the ContentHosting collection structure
- * of your private content area. Then you can access the context directly from the URL and do a security check. This is what we do
+ * The most common way to check security is to encode the context id into the URL, and into the ContentHosting collection structure of your private
+ * content area. Then you can access the context directly from the URL and do a security check. This is what we do in this example.
+ * <p>
+ * An alternate way to handle security is to store meta-data about each item in your application database. Then you need to encode enough information
+ * in the URL to read the item's meta-data. From the meta-data, you can get the ContentHosting reference and security information. We do not show this
  * in this example.
  * <p>
- * An alternate way to handle security is to store meta-data about each item in your application database. Then you need to encode
- * enough information in the URL to read the item's meta-data. From the meta-data, you can get the ContentHosting reference and
- * security information. We do not show this in this example.
- * <p>
- * If you deploy this sample, you will have a working Access servlet / ContentHosting using application that serves up a single file
- * to anyone authorized to see it. You can test this by entering this URL:
+ * If you deploy this sample, you will have a working Access servlet / ContentHosting using application that serves up a single file to anyone
+ * authorized to see it. You can test this by entering this URL:
  * <ul>
  * <li>http://<your server dns and port>/access/sampleAccess/content/private/sampleAccess/mercury/test.txt</li>
  * </ul>
  * <p>
- * Note that there are some methods needed for EntityProducer that we don't use here. The Entity Bus will be later enhanced to make
- * this a cleaner process.
+ * Note that there are some methods needed for EntityProducer that we don't use here. The Entity Bus will be later enhanced to make this a cleaner
+ * process.
  * <p>
  * The key methods are: parseEntityReference...
  */
@@ -135,23 +131,23 @@ public class SampleImplAccess implements EntityProducer
 	/** The chunk size used when streaming (100k). */
 	protected static final int STREAM_BUFFER_SIZE = 102400;
 
-	/*******************************************************************************************************************************
-	 * These are really the only part of the example that would, if we had it, better go in the API interface than the
-	 * implementation class.
-	 ******************************************************************************************************************************/
+	/*************************************************************************************************************************************************
+	 * These are really the only part of the example that would, if we had it, better go in the API interface than the implementation class.
+	 ************************************************************************************************************************************************/
 
 	/**
-	 * The type string for this application: should not change over time as it may be stored in various parts of persistent
-	 * entities.
+	 * The type string for this application: should not change over time as it may be stored in various parts of persistent entities.
 	 */
 	static final String APPLICATION_ID = "sakai:sampleAccess";
 
 	/** This string starts the references to resources in this service. */
-	static final String REFERENCE_ROOT = "/sampleAccess";
+	static final String REFERENCE_ROOT_NAME = "sampleAccess";
 
-	/*******************************************************************************************************************************
+	static final String REFERENCE_ROOT = "/" + REFERENCE_ROOT_NAME;
+
+	/*************************************************************************************************************************************************
 	 * Abstractions, etc.
-	 ******************************************************************************************************************************/
+	 ************************************************************************************************************************************************/
 
 	/**
 	 * Setup a security advisor.
@@ -189,9 +185,9 @@ public class SampleImplAccess implements EntityProducer
 		return true;
 	}
 
-	/*******************************************************************************************************************************
+	/*************************************************************************************************************************************************
 	 * Dependencies
-	 ******************************************************************************************************************************/
+	 ************************************************************************************************************************************************/
 
 	/** Dependency: ContentHostingService */
 	protected ContentHostingService m_contentHostingService = null;
@@ -263,9 +259,67 @@ public class SampleImplAccess implements EntityProducer
 		m_sessionManager = service;
 	}
 
-	/*******************************************************************************************************************************
+	/*************************************************************************************************************************************************
 	 * Init and Destroy
-	 ******************************************************************************************************************************/
+	 ************************************************************************************************************************************************/
+
+	/**
+	 * Assure that a collection with this name exists in the container collection: create it if it is missing.
+	 * 
+	 * @param container
+	 *        The full path of the container collection.
+	 * @param name
+	 *        The collection name to check and create.
+	 */
+	protected void assureCollection(String container, String name)
+	{
+		try
+		{
+			m_contentHostingService.getCollection(container + name);
+		}
+		catch (IdUnusedException e)
+		{
+			// create it
+			M_log.info("init: creating root collection");
+
+			try
+			{
+				ContentCollectionEdit edit = m_contentHostingService.addCollection(container + name);
+				ResourcePropertiesEdit props = edit.getPropertiesEdit();
+
+				// set the alternate reference root so we get all requests
+				props.addProperty(ContentHostingService.PROP_ALTERNATE_REFERENCE, REFERENCE_ROOT);
+
+				props.addProperty(ResourceProperties.PROP_DISPLAY_NAME, name);
+
+				m_contentHostingService.commitCollection(edit);
+			}
+			catch (IdUsedException e2)
+			{
+				M_log.warn("init: creating our root collection: " + e2.toString());
+			}
+			catch (IdInvalidException e2)
+			{
+				M_log.warn("init: creating our root collection: " + e2.toString());
+			}
+			catch (PermissionException e2)
+			{
+				M_log.warn("init: creating our root collection: " + e2.toString());
+			}
+			catch (InconsistentException e2)
+			{
+				M_log.warn("init: creating our root collection: " + e2.toString());
+			}
+		}
+		catch (TypeException e)
+		{
+			M_log.warn("init: checking our root collection: " + e.toString());
+		}
+		catch (PermissionException e)
+		{
+			M_log.warn("init: checking our root collection: " + e.toString());
+		}
+	}
 
 	/**
 	 * Final initialization, once all dependencies are set.
@@ -275,57 +329,34 @@ public class SampleImplAccess implements EntityProducer
 		// setup a security advisor
 		pushAdvisor();
 
+		// set the current user to admin
+		Session s = m_sessionManager.getCurrentSession();
+		String oldUserId = null;
+		if (s != null)
+		{
+			oldUserId = s.getUserId();
+			s.setUserId("admin");
+		}
+		else
+		{
+			M_log.warn("init - no SessionManager.getCurrentSession, cannot set to admin user");
+		}
+
 		try
 		{
 			// register as an entity producer
 			m_entityManager.registerEntityProducer(this, REFERENCE_ROOT);
 
-			// check if the root collection is available
-			String rootCollectionRef = "/private" + REFERENCE_ROOT + "/mercury/";
-			try
-			{
-				m_contentHostingService.getCollection(rootCollectionRef);
-			}
-			catch (IdUnusedException e)
-			{
-				// create it
-				M_log.info("init: creating root collection");
+			// assume private exists
+			// make sure our root area exists
+			assureCollection("/private/", REFERENCE_ROOT_NAME);
 
-				try
-				{
-					ContentCollectionEdit edit = m_contentHostingService.addCollection(rootCollectionRef);
-					ResourcePropertiesEdit props = edit.getPropertiesEdit();
-
-					m_contentHostingService.commitCollection(edit);
-				}
-				catch (IdUsedException e2)
-				{
-					M_log.warn("init: creating our root collection: " + e2.toString());
-				}
-				catch (IdInvalidException e2)
-				{
-					M_log.warn("init: creating our root collection: " + e2.toString());
-				}
-				catch (PermissionException e2)
-				{
-					M_log.warn("init: creating our root collection: " + e2.toString());
-				}
-				catch (InconsistentException e2)
-				{
-					M_log.warn("init: creating our root collection: " + e2.toString());
-				}
-			}
-			catch (TypeException e)
-			{
-				M_log.warn("init: checking our root collection: " + e.toString());
-			}
-			catch (PermissionException e)
-			{
-				M_log.warn("init: checking our root collection: " + e.toString());
-			}
+			// make sure the context collection for mercury in there exists.
+			assureCollection("/private" + REFERENCE_ROOT + "/", "mercury");
 
 			// check if the content is available
-			String contentRef = rootCollectionRef + "test.txt";
+			String contentRef = "/private" + REFERENCE_ROOT + "/mercury/" + "test.txt";
+
 			try
 			{
 				m_contentHostingService.getResource(contentRef);
@@ -394,6 +425,12 @@ public class SampleImplAccess implements EntityProducer
 		{
 			// clear the security advisor
 			popAdvisor();
+
+			// restore the current user, if any
+			if ((oldUserId != null) && (s != null))
+			{
+				s.setUserId(oldUserId);
+			}
 		}
 	}
 
@@ -405,9 +442,9 @@ public class SampleImplAccess implements EntityProducer
 		M_log.info("destroy()");
 	}
 
-	/*******************************************************************************************************************************
+	/*************************************************************************************************************************************************
 	 * EntityProducer
-	 ******************************************************************************************************************************/
+	 ************************************************************************************************************************************************/
 
 	/**
 	 * {@inheritDoc}
@@ -443,15 +480,13 @@ public class SampleImplAccess implements EntityProducer
 	{
 		return new HttpAccess()
 		{
-			public void handleAccess(HttpServletRequest req, HttpServletResponse res, Reference ref,
-					Collection copyrightAcceptedRefs) throws EntityPermissionException, EntityNotDefinedException,
-					EntityAccessOverloadException, EntityCopyrightException
+			public void handleAccess(HttpServletRequest req, HttpServletResponse res, Reference ref, Collection copyrightAcceptedRefs)
+					throws EntityPermissionException, EntityNotDefinedException, EntityAccessOverloadException, EntityCopyrightException
 			{
 				// decide on security
 				if (!checkSecurity(ref))
 				{
-					throw new EntityPermissionException(m_sessionManager.getCurrentSessionUserId(), "sampleAccess", ref
-							.getReference());
+					throw new EntityPermissionException(m_sessionManager.getCurrentSessionUserId(), "sampleAccess", ref.getReference());
 				}
 
 				// isolate the ContentHosting reference
@@ -497,11 +532,11 @@ public class SampleImplAccess implements EntityProducer
 		try
 		{
 			// make sure we have a valid ContentHosting reference with an entity producer we can talk to
-			EntityProducer service = ref.getEntityProducer();
+			EntityProducer service = contentHostingRef.getEntityProducer();
 			if (service == null) return null;
 
 			// pass on the request
-			return service.getEntity(ref);
+			return service.getEntity(contentHostingRef);
 		}
 		finally
 		{
@@ -535,11 +570,11 @@ public class SampleImplAccess implements EntityProducer
 		try
 		{
 			// make sure we have a valid ContentHosting reference with an entity producer we can talk to
-			EntityProducer service = ref.getEntityProducer();
+			EntityProducer service = contentHostingRef.getEntityProducer();
 			if (service == null) return null;
 
 			// pass on the request
-			return service.getEntityDescription(ref);
+			return service.getEntityDescription(contentHostingRef);
 		}
 		finally
 		{
@@ -564,11 +599,11 @@ public class SampleImplAccess implements EntityProducer
 		try
 		{
 			// make sure we have a valid ContentHosting reference with an entity producer we can talk to
-			EntityProducer service = ref.getEntityProducer();
+			EntityProducer service = contentHostingRef.getEntityProducer();
 			if (service == null) return null;
 
 			// pass on the request
-			return service.getEntityResourceProperties(ref);
+			return service.getEntityResourceProperties(contentHostingRef);
 		}
 		finally
 		{
