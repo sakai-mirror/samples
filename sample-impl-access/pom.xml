@@ -5,15 +5,14 @@
     <artifactId>master</artifactId>
     <groupId>org.sakaiproject</groupId>
     <version>M2</version>
-    <relativePath>../master/pom.xml</relativePath>
+    <relativePath>../../master/pom.xml</relativePath>
   </parent>
-  <name>Sakai Samples Project</name>
+  <name>Sakai Samples Access</name>
   <groupId>org.sakaiproject</groupId>
-  <artifactId>samples-base</artifactId>
+  <artifactId>sakai-sample-impl-access-base</artifactId>
   <packaging>pom</packaging>
   <modules>
-    <module>sample-tool-jsf</module>
-    <module>sample-tool-servlet</module>
-    <module>sample-impl-access</module>
+    <module>impl</module>
+    <module>pack</module>
   </modules>
 </project>
