@@ -11,6 +11,14 @@
   <groupId>org.sakaiproject</groupId>
   <artifactId>samples-base</artifactId>
   <packaging>pom</packaging>
+  
+  <scm>
+    <connection>scm:svn:https://source.sakaiproject.org/svn/samples/trunk</connection>
+    <developerConnection>scm:svn:https://source.sakaiproject.org/svn/samples/trunk</developerConnection>
+    <url>https://source.sakaiproject.org/svn/samples/trunk</url>
+  </scm>
+  
+
   <modules>
     <module>sample-tool-jsf</module>
     <module>sample-tool-servlet</module>
