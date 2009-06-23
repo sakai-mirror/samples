@@ -1,10 +1,8 @@
 <projectDescription>
-  <name>sakai-sample-tool-servlet</name>
-  <comment/>
+  <name>sakai-sample-impl-access-pack</name>
+  <comment>Deployment of components</comment>
   <projects>
-    <project>sakai-entity-api</project>
-    <project>sakai-tool-api</project>
-    <project>sakai-user-api</project>
+    <project>sakai-sample-impl-access-impl</project>
     <project>sakai-util</project>
   </projects>
   <buildSpec>
