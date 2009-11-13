@@ -12,9 +12,9 @@
   <artifactId>samples-base</artifactId>
   <packaging>pom</packaging>
   <scm>
-    <connection>scm:svn:https://source.sakaiproject.org/svn/samples/trunk</connection>
-    <developerConnection>scm:svn:https://source.sakaiproject.org/svn/samples/trunk</developerConnection>
-    <url>https://source.sakaiproject.org/svn/samples/trunk</url>
+    <connection>scm:svn:https://source.sakaiproject.org/svn/samples/branches/sakai-2.7.x</connection>
+    <developerConnection>scm:svn:https://source.sakaiproject.org/svn/samples/branches/sakai-2.7.x</developerConnection>
+    <url>https://source.sakaiproject.org/svn/samples/branches/sakai-2.7.x</url>
   </scm>
   <modules>
     <module>sample-tool-jsf</module>
