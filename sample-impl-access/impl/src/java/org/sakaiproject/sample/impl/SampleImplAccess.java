@@ -273,18 +273,19 @@ public class SampleImplAccess implements EntityProducer
 	 */
 	protected void assureCollection(String container, String name)
 	{
+		String collection = container + name;
 		try
 		{
-			m_contentHostingService.getCollection(container + name);
+			m_contentHostingService.getCollection(collection);
 		}
 		catch (IdUnusedException e)
 		{
 			// create it
-			M_log.info("init: creating root collection");
+			M_log.info("init: creating root collection: "+ collection);
 
 			try
 			{
-				ContentCollectionEdit edit = m_contentHostingService.addCollection(container + name);
+				ContentCollectionEdit edit = m_contentHostingService.addCollection(collection);
 				ResourcePropertiesEdit props = edit.getPropertiesEdit();
 
 				// set the alternate reference root so we get all requests
@@ -349,10 +350,10 @@ public class SampleImplAccess implements EntityProducer
 
 			// assume private exists
 			// make sure our root area exists
-			assureCollection("/private/", REFERENCE_ROOT_NAME);
+			assureCollection("/private/", REFERENCE_ROOT_NAME + "/");
 
 			// make sure the context collection for mercury in there exists.
-			assureCollection("/private" + REFERENCE_ROOT + "/", "mercury");
+			assureCollection("/private" + REFERENCE_ROOT + "/", "mercury/");
 
 			// check if the content is available
 			String contentRef = "/private" + REFERENCE_ROOT + "/mercury/" + "test.txt";
