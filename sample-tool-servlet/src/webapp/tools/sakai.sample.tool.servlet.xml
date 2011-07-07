@@ -12,6 +12,8 @@
 		<configuration name="test" value="reg-value" />
 
 		<category name="sakai.sample" />
+                <category name="course" />
+                <category name="project" />
 
 		<keyword name="sample" />
 

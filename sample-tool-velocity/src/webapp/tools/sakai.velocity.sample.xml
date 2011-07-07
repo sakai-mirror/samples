@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+
+<registration>
+
+	<tool
+			id="sakai.velocity.sample"
+			title="Sample Velocity"
+			description="This is a sample Velocity tool.">
+
+		<configuration name="key" value="A Value" />
+
+		<configuration name="reset.button" value="true"/>
+
+		<category name="course" />
+		<category name="project" />
+
+		<!-- Allow this to be set -->
+		<configuration name="functions.require" /> 
+		
+	</tool>
+
+</registration>
